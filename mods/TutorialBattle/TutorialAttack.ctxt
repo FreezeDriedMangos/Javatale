@@ -1,0 +1,6 @@
+#BlueJ class context
+comment0.params=attack\ box\ panel\ soul
+comment0.target=TutorialAttack(int,\ BoxLabel,\ javax.swing.JLayeredPane,\ Soul)
+comment1.params=delta\ soul
+comment1.target=void\ tickUpdate(double,\ Soul)
+numComments=2
