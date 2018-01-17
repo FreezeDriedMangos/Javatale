@@ -1,0 +1,7 @@
+#BlueJ class context
+comment0.target=WavePM
+comment1.params=p\ pan\ l\ horizOff\ vertOff\ amp\ st\ vertical
+comment1.target=WavePM(java.util.ArrayList,\ javax.swing.JLayeredPane,\ int,\ double,\ double,\ double,\ double,\ boolean)
+comment2.params=delta\ soul
+comment2.target=void\ pathing(double,\ Soul)
+numComments=3
