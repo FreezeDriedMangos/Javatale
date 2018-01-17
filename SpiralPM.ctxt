@@ -1,0 +1,7 @@
+#BlueJ class context
+comment0.target=SpiralPM
+comment1.params=pan\ l\ p\ x\ y\ theta\ f
+comment1.target=SpiralPM(javax.swing.JLayeredPane,\ int,\ Projectile,\ double,\ double,\ double,\ int)
+comment2.params=delta\ soul
+comment2.target=void\ pathing(double,\ Soul)
+numComments=3

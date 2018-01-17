@@ -1,0 +1,13 @@
+#BlueJ class context
+comment0.target=SetVelocityPM
+comment1.params=p\ pan
+comment1.target=SetVelocityPM(java.util.ArrayList,\ javax.swing.JPanel)
+comment2.params=p\ pan\ l
+comment2.target=SetVelocityPM(java.util.ArrayList,\ javax.swing.JLayeredPane,\ int)
+comment3.params=pan\ l
+comment3.target=SetVelocityPM(javax.swing.JLayeredPane,\ int)
+comment4.params=pan
+comment4.target=SetVelocityPM(javax.swing.JLayeredPane)
+comment5.params=delta\ soul
+comment5.target=void\ pathing(double,\ Soul)
+numComments=6

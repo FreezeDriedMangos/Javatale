@@ -1,0 +1,13 @@
+#BlueJ class context
+comment0.target=Attack
+comment1.params=attack\ b\ p
+comment1.target=Attack(int,\ BoxLabel,\ javax.swing.JLayeredPane)
+comment2.params=delta\ soul
+comment2.target=void\ update(double,\ Soul)
+comment3.params=soul
+comment3.target=boolean\ isColliding(Soul)
+comment4.params=
+comment4.target=void\ setInvisible()
+comment5.params=delta\ soul
+comment5.target=void\ tickUpdate(double,\ Soul)
+numComments=6

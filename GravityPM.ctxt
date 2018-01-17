@@ -1,0 +1,9 @@
+#BlueJ class context
+comment0.target=GravityPM
+comment1.params=p\ pan\ l
+comment1.target=GravityPM(java.util.ArrayList,\ javax.swing.JLayeredPane,\ int)
+comment2.params=p\ pan\ l\ collides\ b
+comment2.target=GravityPM(java.util.ArrayList,\ javax.swing.JLayeredPane,\ int,\ boolean,\ BoxLabel)
+comment3.params=delta\ soul
+comment3.target=void\ pathing(double,\ Soul)
+numComments=4

@@ -1,0 +1,9 @@
+#BlueJ class context
+comment0.target=PointPathPM
+comment1.params=proj\ pan\ l\ p
+comment1.target=PointPathPM(java.util.ArrayList,\ javax.swing.JLayeredPane,\ int,\ java.util.ArrayList)
+comment2.params=p
+comment2.target=void\ spawnProjectile(Projectile)
+comment3.params=delta\ soul
+comment3.target=void\ pathing(double,\ Soul)
+numComments=4

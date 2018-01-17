@@ -1,0 +1,15 @@
+#BlueJ class context
+comment0.target=Soul
+comment1.params=x\ y
+comment1.target=Soul(int,\ int)
+comment2.params=c
+comment2.target=void\ setColor(int)
+comment3.params=delta\ box
+comment3.target=void\ updateLocation(double,\ BoxLabel)
+comment4.params=invincible
+comment4.target=void\ setInvicibilityImage(boolean)
+comment5.params=delta
+comment5.target=void\ updatePellets(double)
+comment6.params=direction
+comment6.target=void\ setShield(int)
+numComments=7

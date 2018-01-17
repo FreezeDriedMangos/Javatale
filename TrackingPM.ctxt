@@ -1,0 +1,8 @@
+#BlueJ class context
+comment0.target=TrackingPM
+comment1.params=pan\ l\ maxRot
+comment1.target=TrackingPM(javax.swing.JLayeredPane,\ int,\ double)
+comment2.params=delta\ soul
+comment2.target=void\ pathing(double,\ Soul)
+comment2.text=\r\n\ \ \ \ public\ TrackingPM(JLayeredPane\ pan,\ int\ l,\ double\ maxRot,\ Soul\ s){\r\n\ \ \ \ super(new\ ArrayList<Projectile>(),\ pan,\ l);\r\n\ \ \ \ maxRotation\ \=\ maxRot;\r\n\ \ \ \ soul\ \=\ s;\r\n\ \ \ \ }\r\n\r\n\ \ \ \ public\ void\ spawnProjectile(Projectile\ p){\r\n\ \ \ \ panel.add(p,\ layer);\r\n\r\n\ \ \ \ Velocity\ v\ \=\ new\ Velocity();\r\n\ \ \ \ v.setAB(soul.getX()\ -\ p.getX(),\ soul.getY()\ -\ p.getY());\r\n\ \ \ \ double\ rotation\ \=\ v.theta();\r\n\r\n\ \ \ \ if(rotation\ >\ maxRotation){\r\n\ \ \ \ rotation\ \=\ maxRoation;\r\n\ \ \ \ }\ else\ if\ (rotation\ <\ -maxRotation){\r\n\ \ \ \ rotation\ \=\ -maxRotation;\r\n\ \ \ \ }\r\n\r\n\ \ \ \ p.velocity.setTheta(rotation);\r\n\ \ \ \ projectiles.add(p);\r\n\ \ \ \ }\r\n
+numComments=3

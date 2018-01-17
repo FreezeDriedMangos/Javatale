@@ -1,0 +1,21 @@
+#BlueJ class context
+comment0.target=ProjectileManager
+comment1.params=p\ pan
+comment1.target=ProjectileManager(java.util.ArrayList,\ javax.swing.JPanel)
+comment2.params=p\ pan\ l
+comment2.target=ProjectileManager(java.util.ArrayList,\ javax.swing.JLayeredPane,\ int)
+comment3.params=delta\ soul
+comment3.target=void\ update(double,\ Soul)
+comment4.params=delta\ soul
+comment4.target=void\ pathing(double,\ Soul)
+comment5.params=p
+comment5.target=void\ spawnProjectile(Projectile)
+comment6.params=soul
+comment6.target=boolean\ isColliding(Soul)
+comment7.params=
+comment7.target=void\ setInvisible()
+comment8.params=p
+comment8.target=boolean\ pelletCollision(Projectile)
+comment9.params=
+comment9.target=void\ setNotCollidable()
+numComments=10

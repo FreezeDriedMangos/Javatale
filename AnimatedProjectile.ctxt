@@ -1,0 +1,17 @@
+#BlueJ class context
+comment0.target=AnimatedProjectile
+comment1.params=filePath\ x\ y
+comment1.target=AnimatedProjectile(java.lang.String,\ int,\ int)
+comment2.params=template\ x\ y
+comment2.target=AnimatedProjectile(AnimatedProjectile,\ int,\ int)
+comment3.params=filePath\ x\ y\ v\ damage
+comment3.target=AnimatedProjectile(java.lang.String,\ int,\ int,\ Vector,\ int)
+comment4.params=
+comment4.target=void\ animate()
+comment5.params=fps
+comment5.target=void\ animate(int)
+comment6.params=
+comment6.target=void\ run()
+comment7.params=theta
+comment7.target=void\ rotate(double)
+numComments=8

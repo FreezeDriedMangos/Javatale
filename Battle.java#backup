@@ -1,0 +1,601 @@
+import javax.swing.*;
+import java.awt.*;
+import java.io.File;
+import java.util.ArrayList;
+
+public abstract class Battle{
+    public JFrame frame;
+    public JLayeredPane soulPanel;
+    
+    public JLabel fight, act, item, mercy;
+    public JLabel name, lv, hp, hpLabel, hpBar, hpBarBackground;
+    public Projectile attackCursor;
+    
+    public JLabel slash;
+    public JLabel damage;
+    public JLabel monsterHealthBar, monsterHealthBarBackground;
+    public JLabel monster;
+    public int monsterDefense;
+    public int monsterAttack;
+    public int monsterHealth;
+    public int monsterMaxHealth;
+    
+    public Soul soul;
+    public Attack attack;
+    public BoxLabel box;
+    
+    public Item[] items = new Item[12];
+
+    public static final int ATTACK_TIMER_MAX = 370;
+    public int attackTimer = 100;
+    public int turn = 1;
+    public boolean playerTurn = true;
+    public int menuPosition = 0;      
+    public int subMenuPosition = 0;
+    public boolean onSubMenu = false;
+    public int subMenuOptions = 1;
+    public boolean fightUpdate = false;
+    public boolean gameRunning = true;
+    
+    public int sleepTime = 0;
+
+    /*Sub Menu Positions Table
+     * 0    * 1    |    * 6     * 7
+     * 2    * 3    |    * 8     * 9
+     * 4    * 5    |    * 10     * 11
+     */
+
+    public static final int MENU_OPTION_DISTANCE = 152;
+    public static final double SOUL_SPEED = 2;
+
+    public Battle(JFrame f){
+        frame = f;
+
+        /*
+        projectilePanel = new JPanel();
+        projectilePanel.setSize(640, 480 + Main.TOP_BAR_HEIGHT);
+        projectilePanel.setVisible(true);
+        projectilePanel.setLayout(null);
+        projectilePanel.setBackground(new Color(0, 0, 0, 0));
+        //projectilePanel.setTransparent(true);
+        */
+
+        //intitialize the soul on the fight menu
+        soul = new Soul(31 + 7, 433 + 13); //7, 13 centers it on the menu option, while 31, 411 is the height of it
+        defineSoulStats();
+        
+        box = new BoxLabel();
+        box.dialogueBoxSize(false);
+        box.setFont(Main.MAIN_FONT);
+        box.setForeground(Color.WHITE);
+        box.setVerticalAlignment(SwingConstants.TOP);
+        setText();
+
+        //Initialize the menu labels (each option is 152 to the right of the last one)
+        fight = new JLabel(new ImageIcon("imgs/menu/fight_selected.png"));
+        fight.setLocation(31, 433);
+        fight.setSize(110, 42);
+        act = new JLabel(new ImageIcon("imgs/menu/act.png"));
+        act.setLocation(33 + MENU_OPTION_DISTANCE, 433);
+        act.setSize(110, 42);
+        item = new JLabel(new ImageIcon("imgs/menu/item.png"));
+        item.setLocation(41 + MENU_OPTION_DISTANCE * 2, 433);
+        item.setSize(110, 42);
+        mercy = new JLabel(new ImageIcon("imgs/menu/mercy.png"));
+        mercy.setLocation(44 + MENU_OPTION_DISTANCE * 3, 433);
+        mercy.setSize(110, 42);
+        
+        attackCursor = new Projectile("imgs/menu/attackCursor.gif", box.getX() + box.getWidth() + 14, box.getY() + 5);
+        attackCursor.velocity = new Vector(-SOUL_SPEED * 2, 0);
+        attackCursor.setVisible(false);
+        
+        //Initialize the hpBar
+        hpBar = new JLabel(new ImageIcon("imgs/yellow.png"));
+        hpBar.setBackground(Color.YELLOW);
+        hpBar.setLocation(275, 400);
+        hpBar.setSize(soul.hp, 21);
+        hpBarBackground = new JLabel(new ImageIcon("imgs/red.png"));
+        hpBarBackground.setBackground(Color.RED);
+        hpBarBackground.setLocation(275, 400);
+        hpBarBackground.setSize(soul.hp, 21);
+
+        //Initialize the text labels
+        name = new JLabel(soul.name);
+        name.setLocation(30, 403);
+        name.setSize(100, 15);
+        name.setFont(Main.HUD_FONT);
+        name.setForeground(Color.WHITE);
+        
+        hpLabel = new JLabel(new ImageIcon("imgs/menu/hp.png"));
+        hpLabel.setSize(23, 10);
+        hpLabel.setLocation(238, 406);
+        
+        lv = new JLabel("LV " + soul.lv);
+        lv.setLocation(149, 403);
+        lv.setSize(68, 15);
+        lv.setFont(Main.HUD_FONT);
+        lv.setForeground(Color.WHITE);
+
+        hp = new JLabel(soul.hp + " / " + soul.maxHP);
+        hp.setLocation(hpBarBackground.getX() + soul.maxHP + 14, 403);
+        hp.setSize(90, 15);
+        hp.setFont(Main.HUD_FONT);
+        hp.setForeground(Color.WHITE);
+        
+        //set up the monster's label
+        setUpMonster();
+        //fill item arraylist with items
+        setUpItems();
+        
+        //set up the attack graphic
+        slash = new JLabel(new ImageIcon("imgs/slash.gif"));
+        slash.setSize(26, 110);
+        slash.setLocation((monster.getX() + monster.getWidth()/2 - slash.getWidth() / 2), (monster.getY() + monster.getHeight()/2 - slash.getHeight() / 2));
+        slash.setVisible(false);
+        
+        //set up the damage label
+        damage = new JLabel();
+        damage.setFont(Main.DAMAGE_FONT);
+        damage.setSize(200, 30);
+        damage.setLocation((monster.getX() + monster.getWidth()/2 - damage.getWidth() / 2), (monster.getY() + monster.getHeight()/2 - damage.getHeight() / 2) - 20);
+        damage.setForeground(Color.RED);
+        damage.setBackground(Color.BLACK);
+        damage.setHorizontalAlignment(JLabel.CENTER);
+        
+        //set up the monster's health bar
+        monsterHealthBarBackground = new JLabel(new ImageIcon("imgs/menu/gray.jpg"));
+        monsterHealthBarBackground.setBackground(Color.GRAY);
+        monsterHealthBarBackground.setSize(monsterMaxHealth, 10);
+        monsterHealthBarBackground.setLocation((monster.getX() + monster.getWidth()/2 - monsterMaxHealth / 2), (monster.getY() + monster.getHeight()/2 - 5) + 20);
+        monsterHealthBarBackground.setVisible(false);
+        
+        monsterHealthBar = new JLabel(new ImageIcon("imgs/menu/green.jpg"));
+        monsterHealthBar.setBackground(Color.GREEN);
+        monsterHealthBar.setSize(monsterHealth, 10);
+        monsterHealthBar.setLocation(monsterHealthBarBackground.getX(), monsterHealthBarBackground.getY());
+        monsterHealthBar.setVisible(false);
+        
+        //set up the JLayeredPanel
+        soulPanel = new JLayeredPane();
+        soulPanel.setSize(640, 480);
+        soulPanel.setVisible(true);
+        soulPanel.setLayout(null);
+        
+        //add everything to the panel
+        soulPanel.add(attackCursor);
+        soulPanel.add(soul, null, Main.SOUL_LAYER);
+        soulPanel.add(box, null, Main.BOX_LAYER);
+        soulPanel.add(fight, null, Main.MENU_LAYER); soulPanel.add(act, null, Main.MENU_LAYER); soulPanel.add(item, null, Main.MENU_LAYER); soulPanel.add(mercy, null, Main.MENU_LAYER);
+        soulPanel.add(name, null, Main.MENU_LAYER); soulPanel.add(hpBarBackground, null, Main.MENU_LAYER); soulPanel.add(hpBar, null, Main.MENU_LAYER); soulPanel.add(lv, null, Main.MENU_LAYER); soulPanel.add(hp, null, Main.MENU_LAYER); soulPanel.add(hpLabel, null, Main.MENU_LAYER);
+        soulPanel.add(slash, null, Main.MENU_LAYER);
+        soulPanel.add(monster, null, Main.MENU_LAYER);
+        soulPanel.add(damage, null, Main.MENU_LAYER);
+        soulPanel.add(monsterHealthBarBackground, null, Main.MENU_LAYER);
+        soulPanel.add(monsterHealthBar, null, Main.MENU_LAYER);
+        
+        soulPanel.moveToFront(slash);
+        soulPanel.moveToFront(hpBar);
+        soulPanel.moveToFront(damage);
+        soulPanel.moveToFront(monsterHealthBarBackground);
+        soulPanel.moveToFront(monsterHealthBar);
+        
+        JLabel background = new JLabel(new ImageIcon("imgs/menu/black.jpg"));
+        background.setSize(640, 480);
+        soulPanel.add(background, null, 100);
+
+        frame.add(soulPanel);
+        
+        Input.getZRisingEdge(); //clear z input
+    }
+
+    //code modified from http://www.java-gaming.org/index.php?topic=24220.0
+    public void run(){
+        int lastFpsTime = 0;
+        int fps = 0;
+
+        long lastLoopTime = System.nanoTime();
+        final int TARGET_FPS = 60;
+        final long OPTIMAL_TIME = 1000000000 / TARGET_FPS;   
+
+        // keep looping round til the game ends
+        while (gameRunning){
+            // work out how long its been since the last update, this
+            // will be used to calculate how far the entities should
+            // move this loop
+            long now = System.nanoTime();
+            long updateLength = now - lastLoopTime;
+            lastLoopTime = now;
+            double delta = updateLength / ((double)OPTIMAL_TIME);
+
+            // update the frame counter
+            lastFpsTime += updateLength;
+            fps++;
+
+            // update our FPS counter if a second has passed since
+            // we last recorded
+            if (lastFpsTime >= 1000000000){
+                System.out.println("(FPS: "+fps+")");
+                lastFpsTime = 0;
+                fps = 0;
+            } 
+
+            // update the game logic
+            doGameUpdates(delta);
+
+            // draw everyting
+            render();
+
+            // we want each frame to take 10 milliseconds, to do this
+            // we've recorded when we started the frame. We add 10 milliseconds
+            // to this and then factor in the current time to give 
+            // us our final value to wait for
+            // remember this is in ms, whereas our lastLoopTime etc. vars are in ns.
+            lastLoopTime += sleepTime * 1000000; //these two lines allow for sleeping inside of this loop
+            sleepTime = 0;
+            try{Thread.sleep( ((lastLoopTime-System.nanoTime() + OPTIMAL_TIME)/1000000));} 
+            catch(Exception e){ System.out.println("Battle: Sleeping error\nvia: " + e.getMessage());}
+        }
+    }
+
+    public void doGameUpdates(double delta){
+        if(playerTurn){
+            if(fightUpdate){
+                fightTick(delta);
+            } else if(!onSubMenu){
+                menuNavigation();
+            } else {
+                subMenuNavigation();
+            }
+
+            if(!playerTurn){ //setup for the attack
+                box.setText("", false);
+                soul.setVisible(false);
+                
+                fight.setIcon(new ImageIcon("imgs/menu/fight.png")); //sets all menu options to the unselected image
+                act.setIcon(new ImageIcon("imgs/menu/act.png"));
+                item.setIcon(new ImageIcon("imgs/menu/item.png"));
+                mercy.setIcon(new ImageIcon("imgs/menu/mercy.png"));
+
+                Input.clear(); //clear the input so that the soul is stationary
+                soul.velocity = new Vector(); //reset soul's velocity
+                onSubMenu = false;
+                attackTimer = ATTACK_TIMER_MAX;
+                setUpAttack();
+                
+                //sleep until box is the proper size
+                while(box.changingSize){ System.out.println("Battle, doGameUpdates: Sleeping!");
+                    sleep(1);
+                }
+                soul.setVisible(true);
+            }
+        } else {
+            doAttack(delta);
+            hpBar.setSize(soul.hp, 20);
+            if(soul.hp <= 0){
+                gameRunning = false;
+                gameOver();
+            }
+            
+            attackTimer--;
+            if(attackTimer <= 0){
+                playerTurn = true;
+            }
+
+            if(playerTurn){
+                attack.setInvisible();
+                soul.invincibilityTimer = 0;
+                soul.setInvicibilityImage(false);
+                for(Projectile p : soul.pellets){
+                    p.setVisible(false);
+                }
+                
+                soul.setVisible(false);
+                box.dialogueBoxSize(true);
+                turn++;
+                setText();
+                
+                //fix the menu
+                fight.setIcon(new ImageIcon("imgs/menu/fight.png"));
+                act.setIcon(new ImageIcon("imgs/menu/act.png"));
+                item.setIcon(new ImageIcon("imgs/menu/item.png"));
+                mercy.setIcon(new ImageIcon("imgs/menu/mercy.png"));
+
+                if(menuPosition == 0){
+                    fight.setIcon(new ImageIcon("imgs/menu/fight_selected.png"));
+                    soul.setLocation(31 + 7, 433 + 13);
+                } else if(menuPosition == 1){
+                    act.setIcon(new ImageIcon("imgs/menu/act_selected.png"));
+                    soul.setLocation(33 + MENU_OPTION_DISTANCE + 7, 433 + 13);
+                } else if(menuPosition == 2){
+                    item.setIcon(new ImageIcon("imgs/menu/item_selected.png"));
+                    soul.setLocation(41 + MENU_OPTION_DISTANCE * 2 + 7, 433 + 13);
+                } else if(menuPosition == 3){
+                    mercy.setIcon(new ImageIcon("imgs/menu/mercy_selected.png"));
+                    soul.setLocation(44 + MENU_OPTION_DISTANCE * 3 + 7, 433 + 13);
+                } 
+                
+                //sleep until box is the proper size
+                while(box.changingSize){
+                    sleep(1);
+                }
+                
+                soul.setVisible(true);
+            }
+        }
+    }
+
+    public void menuNavigation(){
+        boolean change = false;
+
+        if(Input.getRightRisingEdge()){
+            menuPosition++;
+
+            if(menuPosition > 3){
+                menuPosition = 0;
+            }
+
+            change = true;
+        } else if (Input.getLeftRisingEdge()){
+            menuPosition--;
+
+            if(menuPosition < 0){
+                menuPosition = 3;
+            }
+
+            change = true;
+        }
+
+        if(change){ //update soul position and button images
+            fight.setIcon(new ImageIcon("imgs/menu/fight.png"));
+            act.setIcon(new ImageIcon("imgs/menu/act.png"));
+            item.setIcon(new ImageIcon("imgs/menu/item.png"));
+            mercy.setIcon(new ImageIcon("imgs/menu/mercy.png"));
+
+            if(menuPosition == 0){
+                fight.setIcon(new ImageIcon("imgs/menu/fight_selected.png"));
+                soul.setLocation(31 + 7, 433 + 13);
+            } else if(menuPosition == 1){
+                act.setIcon(new ImageIcon("imgs/menu/act_selected.png"));
+                soul.setLocation(33 + MENU_OPTION_DISTANCE + 7, 433 + 13);
+            } else if(menuPosition == 2){
+                item.setIcon(new ImageIcon("imgs/menu/item_selected.png"));
+                soul.setLocation(41 + MENU_OPTION_DISTANCE * 2 + 7, 433 + 13);
+            } else if(menuPosition == 3){
+                mercy.setIcon(new ImageIcon("imgs/menu/mercy_selected.png"));
+                soul.setLocation(44 + MENU_OPTION_DISTANCE * 3 + 7, 433 + 13);
+            } 
+        }
+
+        if(Input.getZRisingEdge()){
+            onSubMenu = true;
+            System.out.println("Battle, menuNavigation: WARNING: Some code in this function is not yet complete and has been skipped.");
+            
+            if(menuPosition == 0){
+                fightSelected();
+            } else if(menuPosition == 1){
+                actSelected();
+                playerTurn = false; //ends playerTurn (this is here until submenus are implimented)
+            } else if(menuPosition == 2){
+                itemSelected();
+                playerTurn = false; //ends playerTurn (this is here until submenus are implimented)
+            } else if(menuPosition == 3){
+                mercySelected();
+                playerTurn = false; //ends playerTurn (this is here until submenus are implimented)
+            } 
+        }
+    }
+
+    public void subMenuNavigation() {
+        if (Input.getRightRisingEdge()) {
+            if (subMenuOptions <= 5 && subMenuPosition % 2 == 0) {
+                subMenuPosition += 5;
+            } else {
+                subMenuPosition++;
+            }
+
+            if (subMenuPosition > subMenuOptions) {
+                subMenuPosition = subMenuOptions - 1;
+            }
+        } else if (Input.getLeftRisingEdge()) {
+            if (subMenuPosition > 5 && menuPosition % 2 == 1) {
+                subMenuPosition -= 5;
+            } else {
+                subMenuPosition--;
+            }
+
+            if (subMenuPosition > subMenuOptions) {
+                subMenuPosition = subMenuOptions - 1;
+            }
+        } else if (Input.getUpRisingEdge()) {
+            if (subMenuPosition != 0 && subMenuPosition != 1 && subMenuPosition != 6 && subMenuPosition != 7) {
+                subMenuPosition -= 2;
+            }
+        } else if (Input.getDownRisingEdge()) {
+            if (subMenuPosition != 4 && subMenuPosition != 5 && subMenuPosition != 10 && subMenuPosition != 11) {
+                subMenuPosition += 2;
+            }
+        }
+    }
+
+    public void render(){
+        frame.validate();
+        frame.repaint();
+    }
+
+    public void doAttack(double delta){ //the bullet hell phase method that gets called every tic
+        getInputAndMoveSoul(delta);
+        attack.update(delta, soul);
+
+        if(soul.invincibilityTimer > 1){
+            soul.invincibilityTimer--;
+        } else if(soul.invincibilityTimer == 1){
+            soul.invincibilityTimer--;
+            soul.setInvicibilityImage(false);
+        }else {
+            attack.isColliding(soul);
+        }
+        hp.setText(soul.hp + " / " + soul.maxHP);
+        render();
+    }
+
+    public void getInputAndMoveSoul(double delta){
+        if(Input.getRightRisingEdge()){
+            soul.velocity.add(new Vector(SOUL_SPEED, 0));
+        }
+        if(Input.getLeftRisingEdge()){
+            soul.velocity.add(new Vector(SOUL_SPEED, Math.PI));
+        }
+        if(Input.getUpRisingEdge()){
+            if(soul.color[soul.GREEN]){
+                soul.blockDirection = 0;
+            } else if(soul.color[Soul.BLUE]){
+                if(soul.canJump ){
+                    soul.velocity.add(new Vector(SOUL_SPEED, Math.PI * 3 / 2));
+                    soul.jumping = true;
+                    soul.canJump = false;
+                    soul.jumpTimer = 0;
+                }
+            } else if(soul.color[Soul.PURPLE]){
+                if(soul.purpleString != 2){
+                    soul.purpleString++;
+                }
+            } else if(soul.color[soul.RED] || soul.color[soul.YELLOW]){
+                soul.velocity.add(new Vector(SOUL_SPEED, Math.PI * 3 / 2));
+            }
+        }
+        if(Input.getDownRisingEdge()){
+            if(soul.color[soul.RED] || soul.color[soul.YELLOW])
+                soul.velocity.add(new Vector(SOUL_SPEED, Math.PI / 2));
+            else if(soul.color[soul.PURPLE] && soul.purpleString != 0)
+                soul.purpleString--;
+        }
+
+        if(Input.getRightFallingEdge()){
+            soul.velocity.subtract(new Vector(SOUL_SPEED, 0));
+        }
+        if(Input.getLeftFallingEdge()){
+            soul.velocity.subtract(new Vector(SOUL_SPEED, Math.PI));
+        }
+        if(Input.getUpFallingEdge()){
+            if(soul.color[soul.RED] || soul.color[soul.YELLOW]){
+                soul.velocity.subtract(new Vector(SOUL_SPEED, Math.PI * 3 / 2));
+            }
+            soul.jumping = false;
+        }
+        if(Input.getDownFallingEdge()){
+            if(soul.color[soul.RED] || soul.color[soul.YELLOW])
+                soul.velocity.subtract(new Vector(SOUL_SPEED, Math.PI / 2));
+        }
+
+        if(Input.getZRisingEdge()){
+            if(soul.color[soul.YELLOW]){
+                if(soul.pelletTimer == 0){
+                    Projectile pellet = new Projectile(soul.PELLET, soul.getX(), soul.getY());
+                    soul.pellets.add(pellet);
+                    soulPanel.add(pellet, null, Main.SOUL_LAYER);
+                    soul.pelletTimer = soul.PELLET_TIMER_MAX;
+                }
+            }
+        }
+        
+        soul.updateLocation(delta, box);
+    }
+    
+    public void fightSelected(){
+        box.setIcon(new ImageIcon("imgs/menu/attackBar.png"));
+        //attackCursor.setLocation(box.getX() + box.getWidth() + 14, box.getY() + 5);
+        attackCursor.setLocation(677, box.getY() + 5);
+        //attackCursor.velocity = new Vector(-SOUL_SPEED * 2, 0);
+        attackCursor.setVisible(true);
+        
+        fightUpdate = true;
+    }
+    
+    public void fightTick(double delta){ 
+        attackCursor.setLocation(attackCursor.getX() - SOUL_SPEED * 2, attackCursor.getY());
+        
+        if(attackCursor.getX() < 32){ //miss
+            damage.setForeground(Color.GRAY);
+            damage.setText("MISS");
+            sleep(700); 
+            damage.setText("");
+            damage.setForeground(Color.RED);
+            
+            fightEnded();
+        } else if (Input.getZRisingEdge()){ //Successful hit! display attack feedback
+            slash.setVisible(true);
+            sleep(700);
+            slash.setVisible(false);
+            
+            //damage display and stuff
+            double cursorX = attackCursor.getX() - box.getX() - box.getWidth() / 2;
+            if(cursorX < 0){
+                cursorX *= -1;
+            }
+            double accuracy = (box.getWidth() / 2 - cursorX) / (box.getWidth() / 2);
+            int damageValue = Math.round((long)(soul.attack * accuracy - monsterDefense));
+            monsterHealth -= damageValue;
+            
+            //display the damage dealt
+            damage.setText("" + damageValue);
+            monsterHealthBarBackground.setVisible(true);
+            monsterHealthBar.setVisible(true);
+            
+            sleep(700); 
+            double healthDelta = damageValue/700;
+            int size = monsterHealthBar.getWidth();
+                        
+            for(int i = 0; i < 700; i++){
+                size -= healthDelta;
+                monsterHealthBar.setSize(size, 10);
+                sleep(1);
+            }
+            
+            monsterHealthBarBackground.setVisible(false);
+            monsterHealthBar.setVisible(false);
+            damage.setText("");
+            
+            fightEnded();
+        }
+    }
+    
+    public void fightEnded(){
+        box.setIcon(null);
+        attackCursor.setVisible(false);
+        
+        fightUpdate = false;
+        playerTurn = false;
+    }
+    
+    public void actSelected(){
+        
+    }
+    
+    public void itemSelected(){
+        
+    }
+    
+    public void mercySelected(){
+        
+    }
+
+    public void gameOver(){
+        
+    }
+    
+    public void sleep(int milliseconds){
+        try{
+            Thread.sleep(milliseconds);
+            sleepTime += milliseconds;
+        } catch (Exception e){}
+    }
+    
+    public abstract void setUpMonster();
+    public abstract void setText();
+    public abstract void setUpAttack();
+    public abstract void defineSoulStats();
+    public abstract void setUpItems();
+}
+
+
+

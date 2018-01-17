@@ -1,0 +1,13 @@
+#BlueJ class context
+comment0.target=GreenSoulPM
+comment1.params=pan\ filePath\ directions\ dist\ damage\ sp\ soul
+comment1.target=GreenSoulPM(javax.swing.JLayeredPane,\ java.lang.String,\ int[],\ int,\ int,\ double,\ Soul)
+comment2.params=delta\ soul
+comment2.target=void\ pathing(double,\ Soul)
+comment3.params=index\ newSpeed\ soul
+comment3.target=void\ setSpeed(int,\ double,\ Soul)
+comment4.params=soul
+comment4.target=boolean\ isColliding(Soul)
+comment5.params=
+comment5.target=void\ run()
+numComments=6

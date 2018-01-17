@@ -1,0 +1,25 @@
+#BlueJ class context
+comment0.target=Projectile
+comment1.params=
+comment1.target=Projectile()
+comment10.params=soul
+comment10.target=boolean\ isColliding(Soul)
+comment11.params=
+comment11.target=void\ setNotCollidable()
+comment2.params=p\ x\ y
+comment2.target=Projectile(Projectile,\ double,\ double)
+comment3.params=p\ x\ y
+comment3.target=Projectile(Projectile,\ int,\ int)
+comment4.params=filePath\ x\ y
+comment4.target=Projectile(java.lang.String,\ int,\ int)
+comment5.params=filePath\ x\ y\ v
+comment5.target=Projectile(java.lang.String,\ int,\ int,\ Vector)
+comment6.params=filePath\ x\ y\ v\ d
+comment6.target=Projectile(java.lang.String,\ int,\ int,\ Vector,\ int)
+comment7.params=filePath\ x\ y\ v\ b
+comment7.target=Projectile(java.lang.String,\ int,\ int,\ Vector,\ boolean)
+comment8.params=delta
+comment8.target=void\ update(double)
+comment9.params=color
+comment9.target=void\ changeColor(int)
+numComments=12

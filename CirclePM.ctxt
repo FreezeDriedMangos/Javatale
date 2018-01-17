@@ -1,0 +1,9 @@
+#BlueJ class context
+comment0.target=CirclePM
+comment1.params=pan\ l\ proj\ x\ y\ rot\ dist\ count
+comment1.target=CirclePM(javax.swing.JLayeredPane,\ int,\ Projectile,\ double,\ double,\ double,\ double,\ int)
+comment2.params=
+comment2.target=void\ spawnCircle()
+comment3.params=delta\ soul
+comment3.target=void\ pathing(double,\ Soul)
+numComments=4

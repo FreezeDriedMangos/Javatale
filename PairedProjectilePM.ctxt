@@ -1,0 +1,9 @@
+#BlueJ class context
+comment0.target=PairedProjectilePM
+comment1.params=p\ h\ pan\ l
+comment1.target=PairedProjectilePM(java.util.ArrayList,\ java.util.ArrayList,\ javax.swing.JLayeredPane,\ int)
+comment2.params=delta\ soul
+comment2.target=void\ pathing(double,\ Soul)
+comment3.params=index
+comment3.target=void\ switchIndex(int)
+numComments=4

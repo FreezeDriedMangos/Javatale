@@ -1,0 +1,19 @@
+#BlueJ class context
+comment0.target=DialogueLabel
+comment1.params=
+comment1.target=DialogueLabel()
+comment2.params=s\ type
+comment2.target=void\ setText(java.lang.String,\ boolean)
+comment3.params=s\ filePath
+comment3.target=void\ setText(java.lang.String,\ java.lang.String)
+comment4.params=s
+comment4.target=void\ addText(java.lang.String)
+comment5.params=
+comment5.target=void\ run()
+comment6.params=s\ filePath
+comment6.target=void\ addText(java.lang.String,\ java.lang.String)
+comment7.params=s
+comment7.target=void\ setText(java.lang.String)
+comment8.params=s
+comment8.target=java.lang.String\ toHTML(java.lang.String)
+numComments=9

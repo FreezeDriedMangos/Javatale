@@ -1,0 +1,12 @@
+#BlueJ class context
+comment0.target=SoundPlayer
+comment1.params=filePath
+comment1.target=void\ play(java.lang.String)
+comment1.text=\r\n\ \ \ \ public\ static\ void\ play(String\ filePath,\ boolean\ loop){\r\n\ \ \ \ \ \ \ \ boolean\ add\ \=\ true;\r\n\r\n\ \ \ \ \ \ \ \ for(Sound\ s\ \:\ sounds){\r\n\ \ \ \ \ \ \ \ \ \ \ \ if(s.filePath.equals(filePath)){\r\n\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ if(s.clip.isActive()){\r\n\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ add\ \=\ false;\r\n\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }\r\n\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ break;\r\n\ \ \ \ \ \ \ \ \ \ \ \ }\r\n\ \ \ \ \ \ \ \ }\r\n\r\n\ \ \ \ \ \ \ \ if(add){\r\n\ \ \ \ \ \ \ \ \ \ \ \ sounds.add(new\ Sound(filePath,\ loop));\r\n\ \ \ \ \ \ \ \ }\r\n}
+comment2.params=filePath
+comment2.target=void\ playTrack(java.lang.String)
+comment3.params=
+comment3.target=void\ stopTrack()
+comment4.params=
+comment4.target=java.lang.String\ getTrackFilePath()
+numComments=5

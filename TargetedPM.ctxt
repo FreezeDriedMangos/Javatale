@@ -1,0 +1,11 @@
+#BlueJ class context
+comment0.target=TargetedPM
+comment1.params=pan\ s
+comment1.target=TargetedPM(javax.swing.JPanel,\ Soul)
+comment2.params=pan\ l\ s
+comment2.target=TargetedPM(javax.swing.JLayeredPane,\ int,\ Soul)
+comment3.params=p
+comment3.target=void\ spawnProjectile(Projectile)
+comment4.params=delta\ soul
+comment4.target=void\ pathing(double,\ Soul)
+numComments=5
